@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="8" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#0ea5e9"/></marker>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <text x="70" y="110" font-size="42" font-weight="700" font-family="Arial, sans-serif" fill="#0f172a">Eheim Classic 150 (2211)</text>
+  <text x="70" y="155" font-size="20" font-family="Arial, sans-serif" fill="#475569">Filtertyp: Außenfilter</text>
+  <text x="70" y="185" font-size="20" font-family="Arial, sans-serif" fill="#475569">Marke: Eheim</text>
+  <rect x="60" y="220" width="720" height="1280" rx="24" fill="#f1f5f9" stroke="#d8e1ea"/>
+  <text x="100" y="288" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">Wasser rein (schmutzig)</text>
+  <line x1="120" y1="300" x2="120" y2="723" stroke="#0ea5e9" stroke-width="8" marker-end="url(#arrow)"/>
+  <text x="100" y="778" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">Wasser raus (klar)</text>
+<rect x="180" y="330" width="560" height="110" rx="16" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="210" y="370" font-size="22" font-weight="700" font-family="Arial, sans-serif" fill="#0f172a">Mechanische Vorfilterung</text>
+<text x="210" y="402" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">Schwamm / grobe Partikel zuerst</text>
+<rect x="180" y="464" width="560" height="110" rx="16" fill="#dcfce7" stroke="#86efac"/>
+<text x="210" y="504" font-size="22" font-weight="700" font-family="Arial, sans-serif" fill="#14532d">Biohome Korb 1</text>
+<text x="210" y="536" font-size="18" font-family="Arial, sans-serif" fill="#14532d">Biohome Mini Ultra | 0.60 kg</text>
+<rect x="180" y="598" width="560" height="110" rx="16" fill="#fef2f2" stroke="#fecaca"/>
+<text x="210" y="638" font-size="22" font-weight="700" font-family="Arial, sans-serif" fill="#7f1d1d">Auslaufstufe</text>
+<text x="210" y="670" font-size="18" font-family="Arial, sans-serif" fill="#7f1d1d">Kein Feinvlies nach Biohome</text>
+  <rect x="820" y="220" width="320" height="1280" rx="24" fill="#0f172a" stroke="#0b1220"/>
+  <text x="850" y="280" font-size="22" font-weight="700" font-family="Arial, sans-serif" fill="#e2e8f0">Biohome Setup</text>
+  <text x="850" y="340" font-size="16" font-family="Arial, sans-serif" fill="#94a3b8">Empfohlene Gesamtmenge</text>
+  <text x="850" y="370" font-size="22" font-weight="700" font-family="Arial, sans-serif" fill="#f8fafc">0.50 - 0.70 kg</text>
+  <text x="850" y="610" font-size="16" font-family="Arial, sans-serif" fill="#94a3b8">Anordnung</text>
+  <text x="850" y="645" font-size="16" font-family="Arial, sans-serif" fill="#e2e8f0">Vorfilter -> Biohome -> Auslauf. Kein Feinvlies nach Biohome.</text>
+</svg>

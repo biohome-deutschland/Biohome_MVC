@@ -1,0 +1,43 @@
+# ============================================================
+# Biohome MVC - .gitignore
+# ============================================================
+
+# --- Sensible Konfiguration (NIEMALS committen!) ---
+.env
+.env.local
+.env.*.local
+
+# --- PHP-Abhängigkeiten (Composer) ---
+/vendor/
+
+# --- Logs & temporäre Dateien ---
+*.log
+/storage/logs/
+temp_*.html
+
+# --- Testdateien ---
+public/test.html
+public/test_db.php
+public/live_site.html
+
+# --- IDE & Editor ---
+.idea/
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+nbproject/
+
+# --- Betriebssystem ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Docker Override (lokale Anpassungen nicht committen) ---
+docker-compose.override.yml
+
+# --- Backup-Dateien ---
+*.bak
+*.tmp
+*.swp
+*.swo
