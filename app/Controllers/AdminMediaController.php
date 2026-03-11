@@ -29,8 +29,8 @@ class AdminMediaController extends Controller
 
 
 // KONFIGURATION:
-// Wir gehen vom admin-Ordner eins hoch (../) in assets/images/
-$uploadDir = __DIR__ . '/../assets/images/'; 
+// Wir gehen vom admin-Ordner zurück zum Projekt-Root und dann nach public/assets/images/
+$uploadDir = __DIR__ . '/../../public/assets/images/'; 
 $uploadUrl = 'assets/images/'; // Relativer Pfad für die Datenbank/HTML
 
 // Sicherheits-Check: Existiert der Ordner?

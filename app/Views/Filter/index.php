@@ -19,6 +19,29 @@ $type_description = trim((string) ($active_filter_type['description'] ?? ''));
 
 <section class="page-hero">
     <div class="container">
+        <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a href="/" itemprop="item"><span itemprop="name">Startseite</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <?php if ($active_filter_type): ?>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a href="/filtertypen" itemprop="item"><span itemprop="name">Filtertypen</span></a>
+                    <meta itemprop="position" content="2">
+                </li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <span itemprop="name"><?php echo htmlspecialchars($active_filter_type['name']); ?></span>
+                    <meta itemprop="position" content="3">
+                </li>
+                <?php else: ?>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <span itemprop="name">Filtertypen</span>
+                    <meta itemprop="position" content="2">
+                </li>
+                <?php endif; ?>
+            </ol>
+        </nav>
         <p class="eyebrow">Filterkatalog</p>
         <h1 class="page-title"><?php echo htmlspecialchars($type_title); ?></h1>
         <?php if ($type_description !== ''): ?>
@@ -60,10 +83,10 @@ $type_description = trim((string) ($active_filter_type['description'] ?? ''));
         <?php if (!empty($filters)): ?>
             <div class="product-grid">
                 <?php foreach ($filters as $filter): ?>
-                    <article class="product-card">
+                    <article class="product-card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 12px; height: 100%; display: flex; flex-direction: column;">
                         <div class="product-image">
                             <?php if (!empty($filter['image_url'])): ?>
-                                <img src="/<?php echo ltrim(htmlspecialchars($filter['image_url']), '/'); ?>" alt="<?php echo htmlspecialchars($filter['title']); ?>" loading="lazy">
+                                <img src="/<?php echo ltrim(htmlspecialchars($filter['image_url']), '/'); ?>" alt="<?php echo htmlspecialchars($filter['title']); ?>" loading="lazy" style="border-radius: 12px 12px 0 0; object-fit: cover; aspect-ratio: 4/3; width: 100%;">
                             <?php else: ?>
                                 <i class="ph ph-cube placeholder-icon"></i>
                             <?php endif; ?>
@@ -71,7 +94,7 @@ $type_description = trim((string) ($active_filter_type['description'] ?? ''));
                                 <span class="badge badge--highlight">Highlight</span>
                             <?php endif; ?>
                         </div>
-                        <div class="product-content">
+                        <div class="product-content" style="flex: 1; display: flex; flex-direction: column;">
                             <div class="filter-tags">
                                 <?php if (!empty($filter['type_name'])): ?>
                                     <span class="badge"><?php echo htmlspecialchars($filter['type_name']); ?></span>
@@ -81,8 +104,8 @@ $type_description = trim((string) ($active_filter_type['description'] ?? ''));
                                 <?php endif; ?>
                             </div>
                             <h3 class="product-title"><?php echo htmlspecialchars($filter['title']); ?></h3>
-                            <p class="product-desc"><?php echo htmlspecialchars(text_excerpt($filter['description'] ?? '', 120)); ?></p>
-                            <a class="btn btn-primary" href="/filter/<?php echo (int) $filter['id']; ?>">Details ansehen</a>
+                            <p class="product-desc" style="flex: 1;"><?php echo htmlspecialchars(text_excerpt($filter['description'] ?? '', 120)); ?></p>
+                            <a class="btn btn-primary" href="/filter/<?php echo (int) $filter['id']; ?>" style="border-radius: 9999px; width: 100%; text-align: center; margin-top: auto;">Details ansehen</a>
                         </div>
                     </article>
                 <?php endforeach; ?>

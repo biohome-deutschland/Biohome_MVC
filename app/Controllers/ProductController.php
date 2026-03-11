@@ -29,11 +29,18 @@ class ProductController extends Controller
             ];
         }
 
-        // Get global settings
-        $settings = Setting::getAll();
+        // Get layout data and global settings
+        $layout_data = Setting::getLayoutData();
+        $settings = $layout_data['settings'];
         $activeTheme = $settings['active_theme'] ?? 'Biohome-v3';
 
         $categorySlug = $_GET['category'] ?? null;
+        
+        // Validate category slug: only alphanumeric and hyphens, max 60 chars
+        if ($categorySlug && !preg_match('/^[a-zA-Z0-9\-]{1,60}$/', $categorySlug)) {
+            $categorySlug = null;
+        }
+
         $active_category = null;
         
         if ($categorySlug) {
@@ -55,8 +62,10 @@ class ProductController extends Controller
         View::renderTemplate('Layouts/main.php', [
             'page' => $page,
             'settings' => $settings,
+            'layout_data' => $layout_data,
             'activeTheme' => $activeTheme,
             'products' => $products,
+            'categories' => $layout_data['categories'] ?? [],
             'active_category' => $active_category,
             'content_view' => 'Produkte/index.php'
         ]);
@@ -87,14 +96,17 @@ class ProductController extends Controller
             }
         }
 
-        $settings = Setting::getAll();
+        $layout_data = Setting::getLayoutData();
+        $settings = $layout_data['settings'];
         $activeTheme = $settings['active_theme'] ?? 'Biohome-v3';
 
         View::renderTemplate('Layouts/main.php', [
             'page' => $page,
             'settings' => $settings,
+            'layout_data' => $layout_data,
             'activeTheme' => $activeTheme,
             'product' => $product,
+            'product_categories' => $product ? Product::getCategories($product['id']) : [],
             'content_view' => 'Produkte/show.php'
         ]);
     }

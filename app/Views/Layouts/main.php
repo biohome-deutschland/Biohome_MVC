@@ -1,6 +1,5 @@
 <?php
 // Global data that was originally provided by cms.php
-$db = \Core\Model::getDB();
 $site_name = $page['meta_title'] ?? $page['title'] ?? 'Biohome';
 $page_title = $page['title'] ?? '';
 $full_title = $site_name;
@@ -8,16 +7,16 @@ if ($page_title && $page_title !== $site_name) {
     $full_title = $page_title . ' | ' . $site_name;
 }
 
-// Fetch menus
-$menu_items = $db->query("SELECT * FROM menu_items ORDER BY position ASC")->fetchAll(PDO::FETCH_ASSOC);
-$categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-$filter_types = $db->query("SELECT * FROM filter_types ORDER BY position ASC, name ASC")->fetchAll(PDO::FETCH_ASSOC);
+// Extract layout data
+$layout_data = $layout_data ?? [];
+$menu_items = $layout_data['menu_items'] ?? [];
+$categories = $layout_data['categories'] ?? [];
+$filter_types = $layout_data['filter_types'] ?? [];
 
-// Fetch settings
-$settingsRows = $db->query("SELECT setting_key, setting_value FROM settings")->fetchAll(PDO::FETCH_ASSOC);
-$settings = [];
-foreach ($settingsRows as $row) {
-    $settings[$row['setting_key']] = $row['setting_value'];
+// In case $settings wasn't passed directly into the view array, extract it from layout_data
+// (Controllers have been updated to pass $settings explicitly, this is a fallback)
+if (!isset($settings)) {
+    $settings = $layout_data['settings'] ?? [];
 }
 
 $current_page = $_GET['page'] ?? '';
@@ -70,6 +69,25 @@ $THEME_URL = '/themes/Biohome-v3/';
     <?php if ($meta_desc !== ''): ?>
     <meta property="og:description" content="<?php echo htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8'); ?>">
     <?php endif; ?>
+
+    <?php
+    $schema_org = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => $settings['site_name'] ?? 'Biohome Deutschland',
+        'url' => $canonical_scheme . '://' . $canonical_host,
+    ];
+    if (!empty($settings['company_email'])) {
+        $schema_org['contactPoint'] = [
+            '@type' => 'ContactPoint',
+            'email' => $settings['company_email'],
+            'contactType' => 'customer service'
+        ];
+    }
+    ?>
+    <script type="application/ld+json">
+    <?php echo json_encode($schema_org, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -269,6 +287,7 @@ $footer_classes = 'site-footer footer-layout-' . $footer_layout . ' footer-align
 
 $legal_links = [
     ['label' => 'Impressum', 'href' => '/impressum'],
+    ['label' => 'AGB', 'href' => '/agb'],
     ['label' => 'Datenschutz', 'href' => '/datenschutz'],
 ];
 

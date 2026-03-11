@@ -80,4 +80,24 @@ class Product extends Model
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Get categories for a specific product
+     *
+     * @param int $product_id
+     * @return array
+     */
+    public static function getCategories($product_id)
+    {
+        $db = static::getDB();
+        $stmt = $db->prepare('
+            SELECT c.name FROM categories c
+            JOIN product_categories pc ON c.id = pc.category_id
+            WHERE pc.product_id = :product_id
+            ORDER BY c.name ASC
+        ');
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
 }

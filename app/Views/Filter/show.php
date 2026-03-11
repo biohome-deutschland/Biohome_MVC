@@ -18,9 +18,22 @@ if ($filter) {
 <?php if ($filter): ?>
     <section class="product-page">
         <div class="container">
-            <div class="breadcrumb">
-                <a href="/">Startseite</a> / <a href="/filtertypen">Filtertypen</a> / <?php echo htmlspecialchars($filter['title']); ?>
-            </div>
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="/" itemprop="item"><span itemprop="name">Startseite</span></a>
+                        <meta itemprop="position" content="1">
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="/filtertypen" itemprop="item"><span itemprop="name">Filtertypen</span></a>
+                        <meta itemprop="position" content="2">
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <span itemprop="name"><?php echo htmlspecialchars($filter['title']); ?></span>
+                        <meta itemprop="position" content="3">
+                    </li>
+                </ol>
+            </nav>
             <div class="product-layout">
                 <div class="product-media">
                     <?php if (!empty($filter['image_url'])): ?>

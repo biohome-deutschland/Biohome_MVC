@@ -17,6 +17,9 @@ spl_autoload_register(function ($class) {
 // Load configuration
 require_once __DIR__ . '/../config/config.php';
 
+// Load helpers
+require_once __DIR__ . '/../Core/Helpers.php';
+
 // Initialize session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

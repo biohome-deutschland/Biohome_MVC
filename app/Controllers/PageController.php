@@ -40,7 +40,8 @@ class PageController extends Controller
             $page['content'] = preg_replace('/<header class="site-header">.*?<\/header>/is', '', $page['content']);
         }
 
-        $settings = Setting::getAll();
+        $layout_data = Setting::getLayoutData();
+        $settings = $layout_data['settings'];
         $activeTheme = $settings['active_theme'] ?? 'Biohome-v3';
 
         $view = 'Page/show.php';
@@ -51,6 +52,7 @@ class PageController extends Controller
         View::renderTemplate('Layouts/main.php', [
             'page' => $page,
             'settings' => $settings,
+            'layout_data' => $layout_data,
             'activeTheme' => $activeTheme,
             'content_view' => $view
         ]);

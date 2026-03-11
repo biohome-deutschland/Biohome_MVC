@@ -7,6 +7,9 @@ use Core\View;
 use PDO;
 use PDOException;
 
+require_once __DIR__ . '/admin_filter_helpers.php';
+
+
 class AdminFiltersController extends Controller
 {
     protected function before()

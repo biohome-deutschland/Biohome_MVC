@@ -5,6 +5,9 @@ namespace App\Controllers;
 use Core\Controller;
 use Core\View;
 
+require_once __DIR__ . '/admin_filter_helpers.php';
+
+
 /**
  * Admin controller
  */

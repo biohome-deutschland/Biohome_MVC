@@ -101,12 +101,14 @@ class FilterController extends Controller
             $page['title'] = $active_filter_brand['name'] . ' - ' . $page['title'];
         }
 
-        $settings = Setting::getAll();
+        $layout_data = Setting::getLayoutData();
+        $settings = $layout_data['settings'];
         $activeTheme = $settings['active_theme'] ?? 'Biohome-v3';
 
         View::renderTemplate('Layouts/main.php', [
             'page' => $page,
             'settings' => $settings,
+            'layout_data' => $layout_data,
             'activeTheme' => $activeTheme,
             'filters' => $filters,
             'filter_types' => $filter_types,
@@ -152,12 +154,14 @@ class FilterController extends Controller
             ];
         }
 
-        $settings = Setting::getAll();
+        $layout_data = Setting::getLayoutData();
+        $settings = $layout_data['settings'];
         $activeTheme = $settings['active_theme'] ?? 'Biohome-v3';
 
         View::renderTemplate('Layouts/main.php', [
             'page' => $page,
             'settings' => $settings,
+            'layout_data' => $layout_data,
             'activeTheme' => $activeTheme,
             'filter' => $filter,
             'content_view' => 'Filter/show.php'

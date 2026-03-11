@@ -45,4 +45,31 @@ class Setting extends Model
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['setting_value'] : null;
     }
+
+    /**
+     * Get data required for the global layout
+     * 
+     * @return array
+     */
+    public static function getLayoutData()
+    {
+        $db = static::getDB();
+        
+        $menu_items = $db->query("SELECT * FROM menu_items ORDER BY position ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $filter_types = $db->query("SELECT * FROM filter_types ORDER BY position ASC, name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        
+        $settingsRows = $db->query("SELECT setting_key, setting_value FROM settings")->fetchAll(PDO::FETCH_ASSOC);
+        $settings = [];
+        foreach ($settingsRows as $row) {
+            $settings[$row['setting_key']] = $row['setting_value'];
+        }
+        
+        return [
+            'menu_items' => $menu_items,
+            'categories' => $categories,
+            'filter_types' => $filter_types,
+            'settings' => $settings,
+        ];
+    }
 }

@@ -19,6 +19,13 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
+        // Handle legacy CMS URLs like ?page=datenschutz via 301 redirect
+        if (isset($_GET['page']) && !empty($_GET['page'])) {
+            $legacyPage = preg_replace('/[^a-zA-Z0-9-_]/', '', $_GET['page']);
+            header('Location: /' . $legacyPage, true, 301);
+            exit;
+        }
+
         // Load the front page content 
         // In the old system, the front page usually has slug '' or 'home'
         $page = Page::findBySlug('home');
@@ -41,8 +48,9 @@ class HomeController extends Controller
             ];
         }
 
-        // Get global settings (like active theme)
-        $settings = Setting::getAll();
+        // Get layout data and global settings
+        $layout_data = Setting::getLayoutData();
+        $settings = $layout_data['settings'];
         
         $activeTheme = $settings['active_theme'] ?? 'Biohome-v3';
 
@@ -54,6 +62,7 @@ class HomeController extends Controller
         View::renderTemplate('Layouts/main.php', [
             'page' => $page,
             'settings' => $settings,
+            'layout_data' => $layout_data,
             'slides' => $slides,
             'categories' => $categories,
             'featured_products' => $featured_products,

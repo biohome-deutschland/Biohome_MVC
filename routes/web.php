@@ -25,7 +25,10 @@ $adminEntities = [
     'settings' => 'AdminSettingsController',
     'menus' => 'AdminMenusController',
     'slider' => 'AdminSliderController',
-    'media' => 'AdminMediaController'
+    'media' => 'AdminMediaController',
+    'migration' => 'AdminMaintenanceController',
+    'theme-import' => 'AdminMaintenanceController',
+    'export' => 'AdminMaintenanceController'
 ];
 
 foreach ($adminEntities as $route => $controller) {

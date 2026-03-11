@@ -16,17 +16,65 @@ $contact_phone = array_key_exists('company_phone', $settings) ? (string) $settin
 ?>
 
 <?php if ($product): ?>
+    <script type="application/ld+json">
+    <?php
+    $schema_desc = trim(strip_tags((string)($product['description'] ?? '')));
+    if (mb_strlen($schema_desc) > 500) {
+        $schema_desc = mb_substr($schema_desc, 0, 497) . '...';
+    }
+    $schema_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $schema_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $schema_image = !empty($product['image_url']) ? $schema_scheme . '://' . $schema_host . '/' . ltrim($product['image_url'], '/') : '';
+
+    $schema_data = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product['title'] ?? '',
+        'description' => $schema_desc,
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => 'Biohome'
+        ],
+        'offers' => [
+            '@type' => 'Offer',
+            'availability' => 'https://schema.org/InStock',
+            'priceCurrency' => 'EUR',
+            'seller' => [
+                '@type' => 'Organization',
+                'name' => 'Biohome Deutschland'
+            ]
+        ]
+    ];
+    if ($schema_image !== '') {
+        $schema_data['image'] = $schema_image;
+    }
+    echo json_encode($schema_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    ?>
+    </script>
     <section class="product-page">
         <div class="container">
-            <div class="breadcrumb">
-                <a href="/">Startseite</a> / <a href="/produkte">Produkte</a> / <?php echo htmlspecialchars($product['title']); ?>
-            </div>
-            <div class="product-layout">
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="/" itemprop="item"><span itemprop="name">Startseite</span></a>
+                        <meta itemprop="position" content="1">
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="/produkte" itemprop="item"><span itemprop="name">Produkte</span></a>
+                        <meta itemprop="position" content="2">
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <span itemprop="name"><?php echo htmlspecialchars($product['title']); ?></span>
+                        <meta itemprop="position" content="3">
+                    </li>
+                </ol>
+            </nav>
+            <div class="product-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem; align-items: start;">
                 <div class="product-media">
                     <?php if (!empty($product['image_url'])): ?>
-                        <img src="/<?php echo ltrim(htmlspecialchars($product['image_url']), '/'); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" loading="eager">
+                        <img src="/<?php echo ltrim(htmlspecialchars($product['image_url']), '/'); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" loading="eager" style="border-radius: 12px; width: 100%; object-fit: cover; aspect-ratio: 1/1;">
                     <?php else: ?>
-                        <div class="muted">Kein Bild verfuegbar</div>
+                        <div class="muted" style="border-radius: 12px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; aspect-ratio: 1/1;">Kein Bild verfuegbar</div>
                     <?php endif; ?>
                 </div>
                 <div class="product-details">
@@ -42,10 +90,17 @@ $contact_phone = array_key_exists('company_phone', $settings) ? (string) $settin
                     <div class="rich-text">
                         <?php
                         $description = (string) ($product['description'] ?? '');
+                        
+                        // Parse list items for Synergy Boxes
+                        if (strpos($description, '<ul>') !== false && strpos($description, '<li>') !== false) {
+                            $description = str_replace('<ul>', '<ul class="synergy-list" style="list-style: none; padding: 0; display: grid; gap: 1rem; margin-top: 1.5rem;">', $description);
+                            $description = str_replace('<li>', '<li class="synergy-box" style="background-color: #f0fdf4; border-left: 4px solid var(--brand, #16a34a); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; color: #1f2937;">', $description);
+                        }
+
                         if ($description !== '' && $description === strip_tags($description)) {
                             echo nl2br(htmlspecialchars($description));
                         } else {
-                            echo $description; // WYSIWYG Content
+                            echo $description; // Original HTML output
                         }
                         ?>
                     </div>

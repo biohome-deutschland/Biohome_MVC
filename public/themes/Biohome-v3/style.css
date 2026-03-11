@@ -602,9 +602,36 @@ body.nav-open .main-nav {
 }
 
 .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px 0;
+    padding: 0;
+    list-style: none;
     font-size: 0.9rem;
     color: var(--muted);
-    margin-bottom: 16px;
+}
+
+.breadcrumb li {
+    display: inline-flex;
+    align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+    content: "/";
+    margin-left: 8px;
+    color: var(--muted);
+}
+
+.breadcrumb a {
+    color: var(--slate);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+    color: var(--brand);
 }
 
 .filter-chips {
@@ -1086,6 +1113,7 @@ body.nav-open .main-nav {
     .nav-toggle {
         display: none;
     }
+
     .section-heading {
         flex-direction: row;
         justify-content: space-between;
@@ -1206,4 +1234,49 @@ body.nav-open .main-nav {
     .btn {
         transition: none;
     }
+}
+
+/* Prompt 21: Sticky Header and Active Nav */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nav-link.is-active {
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
+    border-radius: 8px;
+    padding: 6px 16px;
+    display: inline-block;
+}
+
+.header-cta,
+.nav-cta .btn {
+    border-radius: 9999px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Prompt 19: Global Design Overrides */
+:root {
+    --brand: #16a34a;
+    /* Exact Biohome green */
+    --brand-dark: #15803d;
+}
+
+body {
+    background-color: #f8fafc;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 20px 20px;
+    line-height: 1.7;
+    font-family: 'Space Grotesk', 'Work Sans', sans-serif;
+}
+
+.section {
+    position: relative;
+    z-index: 1;
+    /* Keep content above background if needed */
 }

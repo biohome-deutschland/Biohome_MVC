@@ -34,10 +34,10 @@ function text_excerpt($text, $length = 120) {
             </div>
             <div class="product-grid" id="productGrid">
                 <?php foreach ($products as $product): ?>
-                    <article class="product-card">
+                    <article class="product-card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 12px; height: 100%; display: flex; flex-direction: column;">
                         <div class="product-image">
                             <?php if (!empty($product['image_url'])): ?>
-                                <img src="/<?php echo ltrim(htmlspecialchars($product['image_url']), '/'); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" loading="lazy">
+                                <img src="/<?php echo ltrim(htmlspecialchars($product['image_url']), '/'); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" loading="lazy" style="border-radius: 12px 12px 0 0; object-fit: cover; aspect-ratio: 4/3; width: 100%;">
                             <?php else: ?>
                                 <i class="ph ph-cube placeholder-icon"></i>
                             <?php endif; ?>
@@ -45,10 +45,10 @@ function text_excerpt($text, $length = 120) {
                                 <span class="badge badge--highlight">Highlight</span>
                             <?php endif; ?>
                         </div>
-                        <div class="product-content">
+                        <div class="product-content" style="flex: 1; display: flex; flex-direction: column;">
                             <h3 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h3>
-                            <p class="product-desc"><?php echo htmlspecialchars(text_excerpt($product['description'] ?? '', 120)); ?></p>
-                            <a class="btn btn-primary" href="/produkt/<?php echo (int) $product['id']; ?>">Details ansehen</a>
+                            <p class="product-desc" style="flex: 1;"><?php echo htmlspecialchars(text_excerpt($product['description'] ?? '', 120)); ?></p>
+                            <a class="btn btn-primary" href="/produkt/<?php echo (int) $product['id']; ?>" style="border-radius: 9999px; width: 100%; text-align: center; margin-top: auto;">Details ansehen</a>
                         </div>
                     </article>
                 <?php endforeach; ?>
