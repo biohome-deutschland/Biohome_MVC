@@ -40,5 +40,9 @@ $router->add('filter-calculator', ['controller' => 'FilterController', 'action' 
 $router->add('filtertypen', ['controller' => 'FilterController', 'action' => 'index']);
 $router->add('filter/{id:\d+}', ['controller' => 'FilterController', 'action' => 'show']);
 
+// Contact Form
+$router->add('kontakt', ['controller' => 'ContactController', 'action' => 'show']);
+$router->add('kontakt/senden', ['controller' => 'ContactController', 'action' => 'send']);
+
 // Static Pages Handler (Catch-all for slugs)
 $router->add('{slug:[a-zA-Z0-9-_\/\.]+}', ['controller' => 'PageController', 'action' => 'show']);

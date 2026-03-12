@@ -10,6 +10,7 @@ $filters = $filters ?? [];
 
 function text_excerpt($text, $length = 120) {
     if (mb_strlen($text) <= $length) return $text;
+    $text = html_entity_decode((string)$text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     return mb_substr(strip_tags($text), 0, $length) . '...';
 }
 

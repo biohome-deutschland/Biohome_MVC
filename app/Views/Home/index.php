@@ -214,6 +214,7 @@ function resolve_slide_image(string $image_url, int $index, array $fallback_imag
                             <h3 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h3>
                             <p class="product-desc" style="flex: 1;"><?php 
                                 $desc = strip_tags($product['description'] ?? '');
+                                $desc = html_entity_decode($desc, ENT_QUOTES | ENT_HTML5, 'UTF-8');
                                 echo htmlspecialchars(mb_strlen($desc) > 120 ? mb_substr($desc, 0, 120) . '...' : $desc); 
                             ?></p>
                             <a class="btn btn-primary btn-block" href="/produkt/<?php echo (int) $product['id']; ?>" style="border-radius: 9999px; width: 100%; text-align: center; margin-top: auto;">Details ansehen</a>

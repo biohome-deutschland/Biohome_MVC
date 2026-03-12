@@ -83,16 +83,62 @@ $html = <<<HTML
 <p>Die Studie zeigte, dass Biohome trotz der toxischen Umgebung eine robuste Bakterienpopulation st&uuml;tzte, die Nitrat exponentiell abbaute.</p>
 <!-- SVG DIAGRAMM: NITRAT -->
 <div style="margin: 30px 0; border: 1px solid #eee; padding: 20px; border-radius: 8px;">
-<h5 style="text-align: center; margin-top: 0;">Nitrat-Konzentration (mg/L) &uuml;ber Zeit</h5>
-<!-- Grid --> <!-- Labels Y --> 6000 3000 0 <!-- Labels X --> 0h 2h 4h 6h <!-- Data Line --> <!-- Legend --> ▼ Nitrat (NO3)
+<h5 style="text-align: center; margin-top: 0; margin-bottom: 20px;">Nitrat-Konzentration (mg/L) &uuml;ber Zeit</h5>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" width="100%" height="250">
+    <style>
+        .grid { stroke: #e2e8f0; stroke-width: 1; }
+        .axis { stroke: #94a3b8; stroke-width: 2; }
+        .label { fill: #475569; font-size: 12px; font-family: sans-serif; }
+        .line { fill: none; stroke: #ef4444; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+        .point { fill: #ef4444; }
+    </style>
+    <line x1="40" y1="20" x2="580" y2="20" class="grid" stroke-dasharray="4" />
+    <line x1="40" y1="120" x2="580" y2="120" class="grid" stroke-dasharray="4" />
+    <line x1="40" y1="220" x2="580" y2="220" class="grid" />
+    <text x="30" y="24" class="label" text-anchor="end">6000</text>
+    <text x="30" y="124" class="label" text-anchor="end">3000</text>
+    <text x="30" y="224" class="label" text-anchor="end">0</text>
+    <text x="40" y="240" class="label" text-anchor="middle">0h</text>
+    <text x="220" y="240" class="label" text-anchor="middle">2h</text>
+    <text x="400" y="240" class="label" text-anchor="middle">4h</text>
+    <text x="580" y="240" class="label" text-anchor="middle">6h</text>
+    <path d="M40,28 C150,150 300,200 580,220" class="line" />
+    <circle cx="40" cy="28" r="5" class="point" />
+    <circle cx="580" cy="220" r="5" class="point" />
+    <rect x="480" y="30" width="12" height="12" fill="#ef4444" rx="2" />
+    <text x="500" y="40" class="label">Nitrat (NO3)</text>
+</svg>
 <p style="font-size: 0.8rem; text-align: center; color: #666; margin-top: 10px;">Adaptiert aus NTUA Studie: Reduktion von ~5750mg/L auf ~0mg/L in 6 Stunden.</p>
 </div>
 <h4 style="color: #0f172a;">Ergebnis B: Entfernung von Schwermetallen</h4>
 <p>In den anaeroben Zonen wurde beobachtet, dass Bakterien Sulfate zu Sulfiden reduzieren. Diese reagieren mit gel&ouml;sten Metallen zu unl&ouml;slichen Metallsulfiden, die im Filter gebunden werden ("Biopr&auml;zipitation").</p>
 <!-- SVG DIAGRAMM: METALLE -->
 <div style="margin: 30px 0; border: 1px solid #eee; padding: 20px; border-radius: 8px;">
-<h5 style="text-align: center; margin-top: 0;">Metall-Entfernung (%)</h5>
-<!-- Bar Copper --> Kupfer -80% <!-- Bar Zinc --> Zink -70% <!-- Bar Nickel --> Nickel -60%
+<h5 style="text-align: center; margin-top: 0; margin-bottom: 20px;">Metall-Entfernung (%)</h5>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="100%" height="200">
+    <style>
+        .bar-bg { fill: #f1f5f9; }
+        .bar-cu { fill: #d97706; }
+        .bar-zn { fill: #64748b; }
+        .bar-ni { fill: #10b981; }
+        .label { fill: #0f172a; font-size: 14px; font-family: sans-serif; font-weight: bold; }
+        .val { fill: #ffffff; font-size: 12px; font-family: sans-serif; font-weight: bold; }
+        .axis { stroke: #cbd5e1; stroke-width: 2; }
+    </style>
+    <rect x="100" y="30" width="400" height="30" class="bar-bg" rx="4" />
+    <rect x="100" y="80" width="400" height="30" class="bar-bg" rx="4" />
+    <rect x="100" y="130" width="400" height="30" class="bar-bg" rx="4" />
+    <rect x="100" y="30" width="320" height="30" class="bar-cu" rx="4" />
+    <rect x="100" y="80" width="280" height="30" class="bar-zn" rx="4" />
+    <rect x="100" y="130" width="240" height="30" class="bar-ni" rx="4" />
+    <text x="90" y="50" class="label" text-anchor="end">Kupfer</text>
+    <text x="90" y="100" class="label" text-anchor="end">Zink</text>
+    <text x="90" y="150" class="label" text-anchor="end">Nickel</text>
+    <text x="410" y="50" class="val" text-anchor="end">-80%</text>
+    <text x="370" y="100" class="val" text-anchor="end">-70%</text>
+    <text x="330" y="150" class="val" text-anchor="end">-60%</text>
+    <line x1="100" y1="20" x2="100" y2="170" class="axis" />
+</svg>
 <p style="font-size: 0.8rem; text-align: center; color: #666; margin-top: 10px;">Signifikante Reduktion gel&ouml;ster Metalle durch Biosorption und Ausf&auml;llung.</p>
 </div>
 </div>
