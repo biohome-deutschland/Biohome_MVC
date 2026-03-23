@@ -384,6 +384,7 @@ function ensure_calculator_schema(PDO $pdo): void
         'recommended_product_id' => "INT NULL",
         'calc_json' => "LONGTEXT NULL",
         'cache_updated_at' => "DATETIME NULL",
+        'is_active' => "TINYINT(1) DEFAULT 1",
     ];
     foreach ($columns as $name => $ddl) {
         if (!admin_column_exists($pdo, 'filters', $name)) {

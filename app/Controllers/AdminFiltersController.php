@@ -36,6 +36,11 @@ $tinymce_notice = '';
 
 try {
     ensure_filter_schema($db);
+    // Ensure is_active column exists
+    $stmt = $db->query("SHOW COLUMNS FROM filters LIKE 'is_active'");
+    if (!$stmt->fetch()) {
+        $db->exec("ALTER TABLE filters ADD COLUMN is_active TINYINT(1) DEFAULT 1");
+    }
 } catch (PDOException $e) {
     $error = 'Filter-Tabellen konnten nicht angelegt werden: ' . $e->getMessage();
 }
@@ -57,7 +62,7 @@ if ($tinymce_key === '') {
     $tinymce_notice = 'TinyMCE laeuft mit dem Demo-Key. Hinterlegen Sie einen API Key unter Einstellungen.';
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action !== 'bulk' && $error === '') {
     $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
     $title = trim((string) ($_POST['title'] ?? ''));
     $desc = (string) ($_POST['description'] ?? '');
@@ -65,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
     $brand_id = isset($_POST['brand_id']) && $_POST['brand_id'] !== '' ? (int) $_POST['brand_id'] : null;
     $video_url = trim((string) ($_POST['video_url'] ?? ''));
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
+    $is_active = isset($_POST['is_active']) ? 1 : 0;
 
     $img = $_POST['image_url_current'] ?? '';
 
@@ -99,15 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
     if ($error === '') {
         if ($id > 0) {
             $stmt = $db->prepare(
-                "UPDATE filters SET title = ?, description = ?, image_url = ?, video_url = ?, type_id = ?, brand_id = ?, is_featured = ? WHERE id = ?"
+                "UPDATE filters SET title = ?, description = ?, image_url = ?, video_url = ?, type_id = ?, brand_id = ?, is_featured = ?, is_active = ? WHERE id = ?"
             );
-            $stmt->execute([$title, $desc, $img, $video_url !== '' ? $video_url : null, $type_id, $brand_id, $is_featured, $id]);
+            $stmt->execute([$title, $desc, $img, $video_url !== '' ? $video_url : null, $type_id, $brand_id, $is_featured, $is_active, $id]);
             $msg = 'Filter gespeichert.';
         } else {
             $stmt = $db->prepare(
-                "INSERT INTO filters (title, description, image_url, video_url, type_id, brand_id, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                "INSERT INTO filters (title, description, image_url, video_url, type_id, brand_id, is_featured, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             );
-            $stmt->execute([$title, $desc, $img, $video_url !== '' ? $video_url : null, $type_id, $brand_id, $is_featured]);
+            $stmt->execute([$title, $desc, $img, $video_url !== '' ? $video_url : null, $type_id, $brand_id, $is_featured, $is_active]);
             $msg = 'Filter angelegt.';
         }
         $action = 'list';
@@ -124,6 +130,28 @@ if ($action === 'delete' && isset($_GET['id']) && $error === '') {
 if (isset($_GET['deleted'])) {
     $msg = 'Filter geloescht.';
 }
+
+// --- STATUS TOGGLE ---
+if ($action === 'toggle_status' && isset($_GET['id']) && $error === '') {
+    $id = (int)$_GET['id'];
+    $db->prepare("UPDATE filters SET is_active = NOT is_active WHERE id=?")->execute([$id]);
+    header('Location: /admin/filters?toggled=true'); exit;
+}
+if (isset($_GET['toggled'])) $msg = "Status geändert.";
+
+// --- BULK ACTION ---
+if ($action === 'bulk' && $_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
+    $bulkAction = $_POST['bulk_action'] ?? '';
+    $ids = $_POST['selected_ids'] ?? [];
+    if (!empty($ids) && in_array($bulkAction, ['set_online', 'set_offline'])) {
+        $isActive = ($bulkAction === 'set_online') ? 1 : 0;
+        $inQuery = implode(',', array_fill(0, count($ids), '?'));
+        $stmt = $db->prepare("UPDATE filters SET is_active = ? WHERE id IN ($inQuery)");
+        $stmt->execute(array_merge([$isActive], $ids));
+        header('Location: /admin/filters?bulk=' . count($ids)); exit;
+    }
+}
+if (isset($_GET['bulk'])) $msg = (int)$_GET['bulk'] . " Filter aktualisiert.";
 
 $filter = null;
 if ($action === 'edit' && isset($_GET['id'])) {

@@ -27,8 +27,12 @@ function e($string) {
     return htmlspecialchars((string)$string, ENT_QUOTES, 'UTF-8');
 }
 
-$css_version = file_exists(__DIR__ . '/../../../public/themes/Biohome-v3/style.css') ? (string) filemtime(__DIR__ . '/../../../public/themes/Biohome-v3/style.css') : (string) time();
-$THEME_URL = '/themes/Biohome-v3/';
+$active_theme = $settings['active_theme'] ?? 'Biohome-v3';
+if (!is_dir(__DIR__ . '/../../../public/themes/' . $active_theme)) {
+    $active_theme = 'Biohome-v3'; // Fallback
+}
+$css_version = file_exists(__DIR__ . '/../../../public/themes/' . $active_theme . '/style.css') ? (string) filemtime(__DIR__ . '/../../../public/themes/' . $active_theme . '/style.css') : (string) time();
+$THEME_URL = '/themes/' . $active_theme . '/';
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -162,6 +166,7 @@ $THEME_URL = '/themes/Biohome-v3/';
                                                 </a>
                                             </li>
                                         <?php endforeach; ?>
+                                        <li style="border-top: 1px solid #e2e8f0; margin-top: 0.5rem; padding-top: 0.5rem;"><a href="/produkt-finder" style="color: var(--brand, #16a34a); font-weight: 600;"><i class="ph ph-magic-wand"></i> Produkt-Finder</a></li>
                                     </ul>
                                 <?php elseif ($is_filters_menu): ?>
                                     <button class="dropdown-toggle" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="submenu-filters">
@@ -192,6 +197,7 @@ $THEME_URL = '/themes/Biohome-v3/';
                                 <?php foreach ($categories as $category): ?>
                                     <li><a href="/produkte?category=<?php echo e($category['slug']); ?>"><?php echo e($category['name']); ?></a></li>
                                 <?php endforeach; ?>
+                                <li style="border-top: 1px solid #e2e8f0; margin-top: 0.5rem; padding-top: 0.5rem;"><a href="/produkt-finder" style="color: var(--brand, #16a34a); font-weight: 600;"><i class="ph ph-magic-wand"></i> Produkt-Finder</a></li>
                             </ul>
                         </li>
                         <li class="nav-item has-dropdown">
@@ -338,6 +344,15 @@ $social_links = [
                             <?php foreach ($legal_links as $link): ?>
                                 <li><a href="<?php echo e($link['href']); ?>"><?php echo e($link['label']); ?></a></li>
                             <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Service &amp; Tools</h4>
+                        <ul>
+                            <li><a href="/produkt-finder">Produkt-Finder</a></li>
+                            <li><a href="/filter-calculator">Teich-Kalkulator</a></li>
+                            <li><a href="/downloads">Downloads</a></li>
+                            <li><a href="/b2b">B2B &amp; H&auml;ndler</a></li>
                         </ul>
                     </div>
                 <?php endif; ?>

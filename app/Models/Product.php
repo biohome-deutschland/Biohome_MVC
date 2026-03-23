@@ -18,7 +18,7 @@ class Product extends Model
     public static function getAll()
     {
         $db = static::getDB();
-        $stmt = $db->query('SELECT * FROM products ORDER BY id DESC');
+        $stmt = $db->query('SELECT * FROM products WHERE is_active = 1 ORDER BY id DESC');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
@@ -47,15 +47,15 @@ class Product extends Model
     {
         $db = static::getDB();
         try {
-            $stmt = $db->query('SELECT * FROM products WHERE is_featured = 1 ORDER BY id DESC LIMIT ' . (int)$limit);
+            $stmt = $db->query('SELECT * FROM products WHERE is_featured = 1 AND is_active = 1 ORDER BY id DESC LIMIT ' . (int)$limit);
             $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (empty($featured)) {
-                $stmt = $db->query('SELECT * FROM products ORDER BY id DESC LIMIT ' . (int)$limit);
+                $stmt = $db->query('SELECT * FROM products WHERE is_active = 1 ORDER BY id DESC LIMIT ' . (int)$limit);
                 $featured = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
             return $featured;
         } catch (\PDOException $e) {
-            $stmt = $db->query('SELECT * FROM products ORDER BY id DESC LIMIT ' . (int)$limit);
+            $stmt = $db->query('SELECT * FROM products WHERE is_active = 1 ORDER BY id DESC LIMIT ' . (int)$limit);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
@@ -73,7 +73,7 @@ class Product extends Model
             SELECT p.* FROM products p
             JOIN product_categories pc ON p.id = pc.product_id
             JOIN categories c ON pc.category_id = c.id
-            WHERE c.slug = :slug
+            WHERE c.slug = :slug AND p.is_active = 1
             ORDER BY p.id DESC
         ');
         $stmt->bindValue(':slug', $slug, PDO::PARAM_STR);

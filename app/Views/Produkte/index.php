@@ -33,6 +33,16 @@ function text_excerpt($text, $length = 120) {
             <div class="search-wrapper" style="margin-bottom: 2rem;">
                 <input type="search" id="productSearch" placeholder="Produkt suchen..." class="search-input" aria-label="Produkte durchsuchen" style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
             </div>
+
+            <?php if (strpos($active_slug, 'teich') !== false): ?>
+                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h4 style="margin: 0 0 0.5rem 0; color: #1e3a8a; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-info"></i> Benötigte Menge berechnen?</h4>
+                        <p style="margin: 0; color: #3b82f6;">Nutzen Sie unseren kostenlosen Teich-Kalkulator, um die optimale Menge Biohome für Ihr Teichvolumen und Ihren Besatz zu ermitteln.</p>
+                    </div>
+                    <a href="/filter-calculator" class="btn btn-primary" style="background: #3b82f6; border-color: #3b82f6; white-space: nowrap;"><i class="ph ph-calculator" style="margin-right: 0.5rem;"></i> Zum Rechner</a>
+                </div>
+            <?php endif; ?>
             <div class="product-grid" id="productGrid">
                 <?php foreach ($products as $product): ?>
                     <article class="product-card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 12px; height: 100%; display: flex; flex-direction: column;">

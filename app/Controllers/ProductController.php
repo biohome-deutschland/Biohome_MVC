@@ -83,12 +83,15 @@ class ProductController extends Controller
             $product = null;
         } else {
             $product = Product::findById((int)$id);
-            if (!$product) {
+            $isAdmin = !empty($_SESSION['admin_logged_in']);
+
+            if (!$product || (isset($product['is_active']) && !$product['is_active'] && !$isAdmin)) {
                 header("HTTP/1.0 404 Not Found");
                 $page = [
                     'title' => 'Produkt nicht gefunden',
-                    'content' => '<p>Das angeforderte Produkt existiert nicht.</p>'
+                    'content' => '<p>Das angeforderte Produkt existiert nicht oder ist momentan offline.</p>'
                 ];
+                $product = null;
             } else {
                 $page = [
                     'title' => $product['title']

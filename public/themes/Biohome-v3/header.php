@@ -96,6 +96,7 @@ $css_version = file_exists(__DIR__ . '/style.css') ? (string) filemtime(__DIR__ 
                                                 </a>
                                             </li>
                                         <?php endforeach; ?>
+                                        <li style="border-top: 1px solid #e2e8f0; margin-top: 0.5rem; padding-top: 0.5rem;"><a href="/produkt-finder" style="color: var(--brand, #16a34a); font-weight: 600;"><i class="ph ph-magic-wand"></i> Produkt-Finder</a></li>
                                     </ul>
                                 <?php elseif ($is_filters_menu): ?>
                                     <button class="dropdown-toggle" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="submenu-filters">
@@ -126,6 +127,7 @@ $css_version = file_exists(__DIR__ . '/style.css') ? (string) filemtime(__DIR__ 
                                 <?php foreach ($categories as $category): ?>
                                     <li><a href="/produkte?category=<?php echo htmlspecialchars($category['slug']); ?>"><?php echo htmlspecialchars($category['name']); ?></a></li>
                                 <?php endforeach; ?>
+                                <li style="border-top: 1px solid #e2e8f0; margin-top: 0.5rem; padding-top: 0.5rem;"><a href="/produkt-finder" style="color: var(--brand, #16a34a); font-weight: 600;"><i class="ph ph-magic-wand"></i> Produkt-Finder</a></li>
                             </ul>
                         </li>
                         <li class="nav-item has-dropdown">

@@ -116,6 +116,16 @@ $social_links = [
                             <?php endforeach; ?>
                         </ul>
                     </div>
+                    <div class="footer-col">
+                        <h4>Service &amp; Tools</h4>
+                        <ul>
+                            <li><a href="/produkt-finder">Produkt-Finder</a></li>
+                            <li><a href="/filter-calculator">Teich-Kalkulator</a></li>
+                            <li><a href="/downloads">Downloads</a></li>
+                            <li><a href="/b2b">B2B &amp; Händler</a></li>
+                            <li><a href="/kontakt">Kontakt aufnehmen</a></li>
+                        </ul>
+                    </div>
                 <?php endif; ?>
                 <?php if ($show_contact): ?>
                     <div class="footer-col">

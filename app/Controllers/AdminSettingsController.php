@@ -87,9 +87,9 @@ $social_yt = get_set($db, 'social_youtube', '');
 $social_insta = get_set($db, 'social_instagram', '');
 
 $themes = [];
-if (is_dir(__DIR__ . '/../themes/')) {
-    foreach (scandir(__DIR__ . '/../themes/') as $dir) {
-        if ($dir !== '.' && $dir !== '..' && is_dir(__DIR__ . '/../themes/' . $dir)) {
+if (is_dir(__DIR__ . '/../../public/themes/')) {
+    foreach (scandir(__DIR__ . '/../../public/themes/') as $dir) {
+        if ($dir !== '.' && $dir !== '..' && is_dir(__DIR__ . '/../../public/themes/' . $dir)) {
             $themes[] = $dir;
         }
     }

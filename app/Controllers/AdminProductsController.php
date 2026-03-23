@@ -21,6 +21,14 @@ class AdminProductsController extends Controller
     {
         $db = \Core\Model::getDB();
 
+        // Ensure is_active column exists
+        try {
+            $stmt = $db->query("SHOW COLUMNS FROM products LIKE 'is_active'");
+            if (!$stmt->fetch()) {
+                $db->exec("ALTER TABLE products ADD COLUMN is_active TINYINT(1) DEFAULT 1");
+            }
+        } catch (PDOException $e) {}
+
 
 
 
@@ -47,11 +55,12 @@ if ($tinymce_key === '') {
 }
 
 // --- SPEICHERN ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action !== 'bulk') {
     $id = $_POST['id'] ?? null;
     $title = trim($_POST['title']);
     $desc = trim($_POST['description']);
     $cats = $_POST['categories'] ?? [];
+    $is_active = isset($_POST['is_active']) ? 1 : 0;
     
     // Bild-Logik:
     // 1. Alten Wert behalten
@@ -86,15 +95,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$error) {
         if ($id) {
-            $stmt = $db->prepare("UPDATE products SET title=?, description=?, image_url=? WHERE id=?");
-            $stmt->execute([$title, $desc, $img, $id]);
+            $stmt = $db->prepare("UPDATE products SET title=?, description=?, image_url=?, is_active=? WHERE id=?");
+            $stmt->execute([$title, $desc, $img, $is_active, $id]);
             // Kategorien neu
             $db->prepare("DELETE FROM product_categories WHERE product_id=?")->execute([$id]);
             foreach($cats as $catId) $db->prepare("INSERT INTO product_categories (product_id, category_id) VALUES (?, ?)")->execute([$id, $catId]);
             $msg = "Produkt gespeichert.";
         } else {
-            $stmt = $db->prepare("INSERT INTO products (title, description, image_url) VALUES (?, ?, ?)");
-            $stmt->execute([$title, $desc, $img]);
+            $stmt = $db->prepare("INSERT INTO products (title, description, image_url, is_active) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$title, $desc, $img, $is_active]);
             $newId = $db->lastInsertId();
             foreach($cats as $catId) $db->prepare("INSERT INTO product_categories (product_id, category_id) VALUES (?, ?)")->execute([$newId, $catId]);
             $msg = "Produkt angelegt.";
@@ -111,6 +120,28 @@ if ($action === 'delete' && isset($_GET['id'])) {
     header('Location: /admin/products?deleted=true'); exit;
 }
 if (isset($_GET['deleted'])) $msg = "Produkt gelöscht.";
+
+// --- STATUS TOGGLE ---
+if ($action === 'toggle_status' && isset($_GET['id'])) {
+    $id = (int)$_GET['id'];
+    $db->prepare("UPDATE products SET is_active = NOT is_active WHERE id=?")->execute([$id]);
+    header('Location: /admin/products?toggled=true'); exit;
+}
+if (isset($_GET['toggled'])) $msg = "Status geändert.";
+
+// --- BULK ACTION ---
+if ($action === 'bulk' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $bulkAction = $_POST['bulk_action'] ?? '';
+    $ids = $_POST['selected_ids'] ?? [];
+    if (!empty($ids) && in_array($bulkAction, ['set_online', 'set_offline'])) {
+        $isActive = ($bulkAction === 'set_online') ? 1 : 0;
+        $inQuery = implode(',', array_fill(0, count($ids), '?'));
+        $stmt = $db->prepare("UPDATE products SET is_active = ? WHERE id IN ($inQuery)");
+        $stmt->execute(array_merge([$isActive], $ids));
+        header('Location: /admin/products?bulk=' . count($ids)); exit;
+    }
+}
+if (isset($_GET['bulk'])) $msg = (int)$_GET['bulk'] . " Produkte aktualisiert.";
 
 // --- DATEN LADEN ---
 $product = null;

@@ -7,6 +7,7 @@ $router->add('index.php', ['controller' => 'HomeController', 'action' => 'index'
 // Products (Catalog and Details)
 $router->add('produkte', ['controller' => 'ProductController', 'action' => 'index']);
 $router->add('produkt/{id:\d+}', ['controller' => 'ProductController', 'action' => 'show']);
+$router->add('produkt-finder', ['controller' => 'ProductFinderController', 'action' => 'index']);
 
 // Admin
 $router->add('admin', ['controller' => 'AdminController', 'action' => 'index']);

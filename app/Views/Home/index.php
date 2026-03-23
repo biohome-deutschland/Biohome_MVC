@@ -41,9 +41,12 @@ function resolve_slide_image(string $image_url, int $index, array $fallback_imag
                             <?php if (!empty($slide['subtitle'])): ?>
                                 <p class="slide-text"><?php echo htmlspecialchars($slide['subtitle']); ?></p>
                             <?php endif; ?>
-                            <?php if (!empty($slide['btn_text'])): ?>
-                                <a class="btn btn-ghost" href="<?php echo htmlspecialchars($slide['btn_link']); ?>"><?php echo htmlspecialchars($slide['btn_text']); ?></a>
-                            <?php endif; ?>
+                            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                                <?php if (!empty($slide['btn_text'])): ?>
+                                    <a class="btn btn-ghost" href="<?php echo htmlspecialchars($slide['btn_link']); ?>"><?php echo htmlspecialchars($slide['btn_text']); ?></a>
+                                <?php endif; ?>
+                                <a class="btn btn-primary" href="/produkt-finder" style="background: rgba(22, 163, 74, 0.9); border: none;">Zum Produkt-Finder</a>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -54,7 +57,10 @@ function resolve_slide_image(string $image_url, int $index, array $fallback_imag
                         <p class="eyebrow">Biohome</p>
                         <h1 class="slide-title">Filtermedien, die Wasser sichtbar besser machen.</h1>
                         <p class="slide-text">Bitte pflegen Sie die Slider-Inhalte im Admin-Bereich.</p>
-                        <a class="btn btn-ghost" href="/produkte">Zum Katalog</a>
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                            <a class="btn btn-ghost" href="/produkte">Zum Katalog</a>
+                            <a class="btn btn-primary" href="/produkt-finder" style="background: rgba(22, 163, 74, 0.9); border: none;">Zum Produkt-Finder</a>
+                        </div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -165,14 +171,21 @@ function resolve_slide_image(string $image_url, int $index, array $fallback_imag
                         $cat_desc = 'Die einzigartige poröse Struktur erzeugt maximale biologische Leistung in besonders kleinem Volumen – ideal für Industrie, Aquakultur und Großanlagen.';
                     }
                 ?>
-                    <a class="category-card" href="/produkte?category=<?php echo htmlspecialchars($slug); ?>" style="border: none; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-radius: 16px; padding: 2.5rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; background: #fff; text-decoration: none;">
-                        <div class="category-icon" style="font-size: 3rem; color: var(--brand, #16a34a); margin-bottom: 0.5rem;"><i class="ph <?php echo $icon; ?>"></i></div>
-                        <h3 style="margin: 0; font-size: 1.2rem; color: #0f172a;"><?php echo htmlspecialchars($category['name']); ?></h3>
-                        <?php if ($cat_desc): ?>
-                            <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0; flex: 1;"><?php echo $cat_desc; ?></p>
-                        <?php endif; ?>
-                        <span class="btn btn-outline" style="margin-top: 1rem; border-radius: 9999px; width: 100%;">Entdecken</span>
-                    </a>
+                    <div class="category-card" style="border: none; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border-radius: 16px; padding: 2.5rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; background: #fff;">
+                        <a href="/produkte?category=<?php echo htmlspecialchars($slug); ?>" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 1rem; flex: 1;">
+                            <div class="category-icon" style="font-size: 3rem; color: var(--brand, #16a34a); margin-bottom: 0.5rem;"><i class="ph <?php echo $icon; ?>"></i></div>
+                            <h3 style="margin: 0; font-size: 1.2rem; color: #0f172a;"><?php echo htmlspecialchars($category['name']); ?></h3>
+                            <?php if ($cat_desc): ?>
+                                <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0; flex: 1;"><?php echo $cat_desc; ?></p>
+                            <?php endif; ?>
+                        </a>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 1rem;">
+                            <a href="/produkte?category=<?php echo htmlspecialchars($slug); ?>" class="btn btn-outline" style="border-radius: 9999px; width: 100%;">Entdecken</a>
+                            <?php if(strpos($slug,'teich')!==false): ?>
+                                <a href="/filter-calculator" class="btn btn-primary" style="border-radius: 9999px; width: 100%; background: #3b82f6; border-color: #3b82f6;"><i class="ph ph-calculator" style="margin-right: 0.5rem;"></i> Teich-Kalkulator</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>

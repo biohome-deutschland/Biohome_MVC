@@ -58,7 +58,7 @@ class FilterController extends Controller
                     FROM filters f
                     LEFT JOIN filter_types t ON f.type_id = t.id
                     LEFT JOIN filter_brands b ON f.brand_id = b.id";
-            $where = [];
+            $where = ["f.is_active = 1"];
             $params = [];
 
             if ($active_type_id) {
@@ -142,12 +142,14 @@ class FilterController extends Controller
             $filter = $stmt->fetch(\PDO::FETCH_ASSOC);
         }
 
-        if (!$filter) {
+        $isAdmin = !empty($_SESSION['admin_logged_in']);
+        if (!$filter || (isset($filter['is_active']) && !$filter['is_active'] && !$isAdmin)) {
             header("HTTP/1.0 404 Not Found");
             $page = [
                 'title' => 'Filter nicht gefunden',
-                'content' => '<p>Das angeforderte Modell existiert nicht.</p>'
+                'content' => '<p>Das angeforderte Modell existiert nicht oder ist momentan offline.</p>'
             ];
+            $filter = null;
         } else {
             $page = [
                 'title' => $filter['title']

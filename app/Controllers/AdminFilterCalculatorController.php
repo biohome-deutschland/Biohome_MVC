@@ -8,6 +8,8 @@ use PDO;
 use Throwable;
 use RuntimeException;
 
+require_once __DIR__ . '/admin_filter_helpers.php';
+
 // --- LEGACY FUNCTIONS MOVED TO admin_filter_helpers.php ---
 
 
